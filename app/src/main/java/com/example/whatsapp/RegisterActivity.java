@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     private Button createaccountbutton;
@@ -25,6 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword;
     private FirebaseAuth mauth;
     private ProgressDialog loadingbar;
+    private DatabaseReference dataref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mauth=FirebaseAuth.getInstance();
+        dataref= FirebaseDatabase.getInstance().getReference();
         InitializeFields();
         alreadyhaveaccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +72,9 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful())
                     {
+                        String Currentuserid=mauth.getCurrentUser().getUid();
+                        dataref.child("Users").child(Currentuserid).setValue("");
+                        Sendusertomainactivity();
                         Toast.makeText(RegisterActivity.this,"Account Created Successfully",Toast.LENGTH_LONG).show();
                         loadingbar.dismiss();
                     }
@@ -83,6 +90,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
     }
+
+    private void Sendusertomainactivity() {
+        Intent loginintent=  new Intent(RegisterActivity.this,MainActivity.class);
+        startActivity(loginintent);
+    }
+
     private void InitializeFields() {
         createaccountbutton=(Button)findViewById(R.id.reg_login_button);
         alreadyhaveaccount=(TextView)findViewById(R.id.already_have_account);
@@ -92,7 +105,9 @@ public class RegisterActivity extends AppCompatActivity {
     }
     private void SendusertoLoginactivity()
     {
-        Intent loginintent=  new Intent(RegisterActivity.this,LoginActivity.class);
-        startActivity(loginintent);
+        Intent mainintent=  new Intent(RegisterActivity.this,LoginActivity.class);
+        mainintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainintent);
+        finish();
     }
 }
