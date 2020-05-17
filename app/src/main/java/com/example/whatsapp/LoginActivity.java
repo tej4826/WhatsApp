@@ -89,12 +89,12 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void Initializefields() {
-        LoginButton = (Button) findViewById(R.id.login_button);
-        PhoneLoginButton=(Button)findViewById(R.id.phone_login_new_button);
-        UserEmail = (EditText) findViewById(R.id.email);
-        UserPassword=(EditText)findViewById(R.id.password);
-        Neednewaccount=(TextView)findViewById(R.id.need_new_account);
-        forgetpassword=(TextView)findViewById(R.id.forget_password);
+        LoginButton = findViewById(R.id.login_button);
+        PhoneLoginButton= findViewById(R.id.phone_login_new_button);
+        UserEmail = findViewById(R.id.email);
+        UserPassword= findViewById(R.id.password);
+        Neednewaccount= findViewById(R.id.need_new_account);
+        forgetpassword= findViewById(R.id.forget_password);
         loadingbar=new ProgressDialog(this);
 
 

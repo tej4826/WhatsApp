@@ -14,8 +14,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -41,6 +44,40 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 UpdateSettings();
+            }
+        });
+        RetrieveUserInfo();
+    }
+
+    private void RetrieveUserInfo() {
+        dataref.child("Users").child(CurrentUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if((dataSnapshot.exists()) && dataSnapshot.hasChild("name") && dataSnapshot.hasChild("image"))
+                {
+                    String retrieveusername=dataSnapshot.child("name").getValue().toString();
+                    String retrievestatus=dataSnapshot.child("status").getValue().toString();
+                    String retrieveprofileimage=dataSnapshot.child("image").getValue().toString();
+                    username.setText(retrieveusername);
+                    status.setText(retrievestatus);
+                }
+                else if((dataSnapshot.exists()) && dataSnapshot.hasChild("name"))
+                {
+                    String retrieveusername=dataSnapshot.child("name").getValue().toString();
+                    String retrievestatus=dataSnapshot.child("status").getValue().toString();
+                    username.setText(retrieveusername);
+                    status.setText(retrievestatus);
+                }
+                else
+                {
+                    username.setVisibility(View.VISIBLE);
+                    Toast.makeText(SettingsActivity.this, "Please Update your Credentials", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

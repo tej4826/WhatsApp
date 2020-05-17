@@ -97,10 +97,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void InitializeFields() {
-        createaccountbutton=(Button)findViewById(R.id.reg_login_button);
-        alreadyhaveaccount=(TextView)findViewById(R.id.already_have_account);
-        UserEmail = (EditText) findViewById(R.id.reg_email);
-        UserPassword=(EditText)findViewById(R.id.reg_password);
+        createaccountbutton= findViewById(R.id.reg_login_button);
+        alreadyhaveaccount= findViewById(R.id.already_have_account);
+        UserEmail = findViewById(R.id.reg_email);
+        UserPassword= findViewById(R.id.reg_password);
         loadingbar=new ProgressDialog(this);
     }
     private void SendusertoLoginactivity()
